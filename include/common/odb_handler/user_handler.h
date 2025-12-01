@@ -19,7 +19,6 @@ namespace InstantSocial
             std::shared_ptr<UserEntity> GetByEmail(const std::string &email);
             std::shared_ptr<UserEntity> GetByNickname(const std::string &nickname);
             std::vector<UserEntity> GetByMultiUsers(const std::vector<std::string> &user_id_list);
-            
 
         private:
             std::shared_ptr<odb::core::database> m_db;

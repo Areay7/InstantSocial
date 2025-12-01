@@ -23,25 +23,25 @@ class UserEntity
         UserEntity(const std::string &user_id, const std::string &email, bool is_email) :
             m_user_id(user_id), m_email(email) {}
 
-        void user_id(const std::string &val) { m_user_id = val; }
+        void user_id(const std::string &user_id) { m_user_id = user_id; }
         std::string user_id() const { return m_user_id; }
 
-        void nickname(const std::string &val) { m_nickname = val; }
+        void nickname(const std::string &nickname) { m_nickname = nickname; }
         std::string nickname() const { if (m_nickname) return *m_nickname; else return std::string(); }
 
-        void description(const std::string &val) { m_description = val; }
+        void description(const std::string &description) { m_description = description; }
         std::string description() const { if (m_description) return *m_description; else return std::string(); }
 
-        void password(const std::string &val) { m_password = val; }
+        void password(const std::string &password) { m_password = password; }
         std::string password() const { if (m_password) return *m_password; else return std::string(); }
 
-        void phone(const std::string &val) { m_phone = val; }
+        void phone(const std::string &phone) { m_phone = phone; }
         std::string phone() const { if (m_phone) return *m_phone; else return std::string(); }
 
-        void email(const std::string &val) { m_email = val; }
+        void email(const std::string &email) { m_email = email; }
         std::string email() const { if (m_email) return *m_email; else return std::string(); }
 
-        void avatar_id(const std::string &val) { m_avatar_id = val; }
+        void avatar_id(const std::string &avatar_id) { m_avatar_id = avatar_id; }
         std::string avatar_id() const { if (m_avatar_id) return *m_avatar_id; else return std::string(); }
 
     private:
