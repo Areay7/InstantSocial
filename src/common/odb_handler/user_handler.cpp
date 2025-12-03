@@ -7,7 +7,7 @@ namespace InstantSocial
     {
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             m_db->persist(*user);
             t.commit();
             return true;
@@ -23,7 +23,7 @@ namespace InstantSocial
     {
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             m_db->update(*user);
             t.commit();
             return true;
@@ -40,7 +40,7 @@ namespace InstantSocial
         std::shared_ptr<UserEntity> res;
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             typedef odb::query<UserEntity> Query;
             res.reset(m_db->query_one<UserEntity>(Query(odb::query<UserEntity>::user_id == user_id)));
             t.commit();
@@ -57,7 +57,7 @@ namespace InstantSocial
         std::shared_ptr<UserEntity> res;
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             typedef odb::query<UserEntity> Query;
             res.reset(m_db->query_one<UserEntity>(Query(odb::query<UserEntity>::phone == phone)));
             t.commit();
@@ -74,7 +74,7 @@ namespace InstantSocial
         std::shared_ptr<UserEntity> res;
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             typedef odb::query<UserEntity> Query;
             res.reset(m_db->query_one<UserEntity>(Query(odb::query<UserEntity>::email == email)));
             t.commit();
@@ -86,12 +86,29 @@ namespace InstantSocial
         return res;
     }
 
+    std::shared_ptr<UserEntity> UserHandler::GetByNickname(const std::string &nickname)
+    {
+        std::shared_ptr<UserEntity> res;
+        try 
+        {
+            odb::transaction t(m_db->begin());
+            typedef odb::query<UserEntity> Query;
+            res.reset(m_db->query_one<UserEntity>(Query(odb::query<UserEntity>::nickname == nickname)));
+            t.commit();
+        }
+        catch (const std::exception &e) 
+        {
+            LOG_ERROR("Get user by nickname {} failed: {}", nickname, e.what());
+        }
+        return res;
+    }
+
     std::vector<UserEntity> UserHandler::GetByMultiUsers(const std::vector<std::string> &user_id_list)
     {
         std::vector<UserEntity> res;
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             
             if (!user_id_list.empty()) 
             {

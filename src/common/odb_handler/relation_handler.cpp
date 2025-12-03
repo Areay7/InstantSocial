@@ -9,7 +9,7 @@ namespace InstantSocial
         {
             RelationEntity r1(user_id, peer_id);
             RelationEntity r2(peer_id, user_id);
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             m_db->persist(r1);
             m_db->persist(r2);
             t.commit();
@@ -27,7 +27,7 @@ namespace InstantSocial
     {
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             typedef odb::query<RelationEntity> Query;
             m_db->erase_query<RelationEntity>(Query::user_id == user_id && Query::peer_id == peer_id);
             m_db->erase_query<RelationEntity>(Query::user_id == peer_id && Query::peer_id == user_id);
@@ -49,10 +49,11 @@ namespace InstantSocial
         bool found = false;
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             Result r = m_db->query<RelationEntity>(Query::user_id == user_id && Query::peer_id == peer_id);
-            t.commit();
+            // 在事务提交前检查结果
             found = !r.empty();
+            t.commit();
             LOG_INFO("Checked existence of relation ({} -> {}): {}", user_id, peer_id, found);
         } 
         catch (const std::exception &e) 
@@ -67,7 +68,7 @@ namespace InstantSocial
         std::vector<std::string> peers;
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             typedef odb::query<RelationEntity> Query;
             typedef odb::result<RelationEntity> Result;
             Result r = m_db->query<RelationEntity>(Query::user_id == user_id);

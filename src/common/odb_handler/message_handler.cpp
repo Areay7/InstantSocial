@@ -1,5 +1,7 @@
 #include "message_handler.h"
 #include "logger.h"
+#include <algorithm>
+#include <sstream>
 
 namespace InstantSocial 
 {
@@ -7,7 +9,7 @@ namespace InstantSocial
     {
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             m_db->persist(message);
             t.commit();
             LOG_INFO("Inserted message {} successfully", message.message_id());
@@ -24,7 +26,7 @@ namespace InstantSocial
     {
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             typedef odb::query<MessageEntity> Query;
             m_db->erase_query<MessageEntity>(Query::session_id == session_id);
             t.commit();
@@ -43,20 +45,25 @@ namespace InstantSocial
         std::vector<MessageEntity> res;
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             typedef odb::query<MessageEntity> Query;
             typedef odb::result<MessageEntity> Result;
-            Result r = m_db->query<MessageEntity>(
-                Query::session_id == session_id + 
-                " ORDER BY create_time DESC LIMIT " + 
-                std::to_string(count)
-            );
-            for (auto it = r.begin(); it != r.end(); ++it) 
+
+            // 构造查询条件：session_id='xx' ORDER BY create_time DESC LIMIT count
+            std::stringstream cond;
+            cond << "session_id='" << session_id << "' ";
+            cond << "ORDER BY create_time DESC LIMIT " << count;
+
+            Result r(m_db->query<MessageEntity>(Query(cond.str())));
+            for (Result::iterator it(r.begin()); it != r.end(); ++it) 
             {
                 res.push_back(*it);
             }
-            t.commit();
+
+            // 逆序，使最早的消息在前
             std::reverse(res.begin(), res.end());
+
+            t.commit();
             LOG_INFO("Retrieved {} recent messages for session {}", res.size(), session_id);
         } 
         catch (const std::exception &e) 
@@ -73,7 +80,7 @@ namespace InstantSocial
         std::vector<MessageEntity> res;
         try 
         {
-            odb::core::transaction t(m_db->begin());
+            odb::transaction t(m_db->begin());
             typedef odb::query<MessageEntity> Query;
             typedef odb::result<MessageEntity> Result;
             Result r = m_db->query<MessageEntity>(

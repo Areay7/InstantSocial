@@ -7,7 +7,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PWD}/../../bin)
 
 set(odb_path ${PWD}/../../include/entity)
 
-set(odb_files user_entity.h relation_entity.h message_entity.h friend_apply_entity.h) 
+set(odb_files user_entity.h relation_entity.h message_entity.h friend_apply_entity.h chat_session_member_entity.h chat_session_entity.h) 
 
 include_directories(${PWD}/../../include/common)
 include_directories(${PWD}/../../include/entity)
@@ -57,10 +57,13 @@ ${PWD}/logger.cpp
 ${PWD}/rabbitmq.cpp
 ${PWD}/redis_client.cpp
 ${PWD}/odb_client.cpp
+${PWD}/odb_handler_test.cpp
 ${PWD}/odb_handler/user_handler.cpp
 ${PWD}/odb_handler/relation_handler.cpp
 ${PWD}/odb_handler/message_handler.cpp
 ${PWD}/odb_handler/friend_apply_handler.cpp
+${PWD}/odb_handler/chat_session_member_handler.cpp
+${PWD}/odb_handler/chat_session_handler.cpp
 ${odb_srcs}
 )
 
