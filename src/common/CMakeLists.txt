@@ -57,6 +57,8 @@ ${PWD}/logger.cpp
 ${PWD}/rabbitmq.cpp
 ${PWD}/redis_client.cpp
 ${PWD}/odb_client.cpp
+${PWD}/etcd_client.cpp
+${PWD}/service_channel.cpp
 ${PWD}/odb_handler_test.cpp
 ${PWD}/odb_handler/user_handler.cpp
 ${PWD}/odb_handler/relation_handler.cpp
@@ -70,4 +72,4 @@ ${odb_srcs}
 
 add_executable(${target} ${COMMON_SOURCES})
 
-target_link_libraries(${target} -lspdlog -lamqpcpp -lhiredis -lredis++ -lodb-mysql -lodb -lodb-boost -lev -lfmt -lpthread -ldl)
+target_link_libraries(${target} -lbrpc -lgflags -lssl -lcrypto -lprotobuf -lleveldb -letcd-cpp-api -lcpprest -lspdlog -lamqpcpp -lhiredis -lredis++ -lodb-mysql -lodb -lodb-boost -lev -lfmt -lpthread -ldl)

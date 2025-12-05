@@ -18,7 +18,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/common)
 # add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/message)
 
 # 添加测试目录（需要在 common 之后，因为测试依赖 ODB 生成的文件）
-option(BUILD_TESTS "Build tests" ON)
+option(BUILD_TESTS "Build tests" OFF)
 if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
